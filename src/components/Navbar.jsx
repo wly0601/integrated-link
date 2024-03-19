@@ -54,6 +54,7 @@ const Navbar = () => {
     if (data) {
       setIsOpen(false);
       alert("Link Berhasil Dibuat!");
+      window.location.reload();
     }
   };
 
