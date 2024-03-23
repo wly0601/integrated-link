@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Modal from "react-modal";
 import axios from "axios";
 
@@ -40,10 +40,6 @@ const Navbar = () => {
       name: linkRef.current.value
     };
 
-    if (inp.title === "" || inp.link === "") {
-      console.log("aaaa");
-    }
-
     console.log(import.meta.env.BACKEND_URL);
     const { data } = await axios.post(`http://localhost:8000/link`, inp, {
       headers: {
@@ -66,7 +62,7 @@ const Navbar = () => {
         </h4>
         <button
           type="button"
-          className="btn btn-primary"
+          className="btn btn-primary fw-bold"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
           data-bs-whatever="@getbootstrap"
@@ -80,6 +76,7 @@ const Navbar = () => {
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
+          ariaHideApp={false}
         >
           <div className="container text-center">
             <h2 className="text-dark mb-3"> Masukkan Data </h2>
@@ -90,18 +87,20 @@ const Navbar = () => {
               <div className="px-2">
                 <h5 className="text-bold"> Judul Link</h5>
                 <input
-                  class="form-control"
+                  className="form-control"
                   placeholder="Contoh : Data Akuisisi Livin April 2024"
                   className="py-2 w-100 fs-3"
+                  required
                   ref={titleRef}
                 />
               </div>
               <div className="px-2 py-2">
-                <h5 className="text-bold"> Link </h5>
+                <h5 className="text-bold"> Link (Diawali oleh https://) </h5>
                 <input
-                  class="form-control"
-                  placeholder="http://...."
+                  className="form-control"
+                  placeholder="https://...."
                   className="py-2 w-100 fs-3"
+                  required
                   ref={linkRef}
                 />
               </div>

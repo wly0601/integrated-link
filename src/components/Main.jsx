@@ -1,12 +1,16 @@
 import React from "react";
-import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import axios from "axios";
-import Link from "react-dom";
+import Result from "./Result";
 
-const Main = ({ opt }) => {
+const Main = () => {
   const [link, setLink] = React.useState([]);
+  const [input, setInput] = React.useState("");
+  const inputRef = React.useRef("");
+  const [result, setResult] = React.useState([]);
+
   const getLinks = async () => {
-    const get = await axios.get("http://localhost:8000/link");
+    console.log(process.env.BANCKEND_URL);
+    const get = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/link`);
     setLink(get.data);
   };
 
@@ -14,54 +18,65 @@ const Main = ({ opt }) => {
     getLinks();
   }, []);
 
-  const manyItems = link.map((item, i) => ({
-    id: i,
-    name: item.title,
-    link: item.name
-  }));
+  var data = [];
+  if (link.length !== 0) {
+    data = link.map(item => ({
+      id: item.id,
+      name: item.title,
+      link: item.name
+    }));
+  }
 
-  console.log(manyItems);
-  const handleOnSearch = (string, results) => {
-    console.log(string, results);
+  let content = <> </>;
+  if (result && input !== "") {
+    content = (
+      <div className="container mt-5">
+        <div className="row" key={0}>
+          {result.map(item => (
+            <Result output={item} key={item.id} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  const submitHandler = event => {
+    event.preventDefault();
+    setInput("");
   };
 
-  const handleOnHover = result => {
-    console.log(result);
-  };
-
-  const handleOnSelect = item => {
-    window.open(item.link);
-  };
-
-  const handleOnFocus = () => {};
-
-  const handleOnClear = () => {
-    console.log("Cleared");
+  const changeHandler = e => {
+    console.log(inputRef.current.value);
+    let key = inputRef.current.value;
+    setInput(inputRef.current.value);
+    const res = data.filter(n => n.name.match(new RegExp(`.*${key}.*`, "i")));
+    setResult(res);
   };
 
   return (
-    <div style={{ width: "80%" }} className="container mx-auto">
-      <h2> Integrated Link </h2>
-      <div style={{ marginBottom: 20 }}> Bank Mandiri Cabang Yos Sudarso </div>
-      <ReactSearchAutocomplete
-        items={manyItems}
-        maxResults={5}
-        onSearch={handleOnSearch}
-        onHover={handleOnHover}
-        onSelect={handleOnSelect}
-        onFocus={handleOnFocus}
-        onClear={handleOnClear}
-        fuseOptions={{ keys: ["name"] }} // Search in the description text as well
-        showNoResultsText="Link Tidak Tersedia"
-        autoFocus={true}
-        styling={{
-          zIndex: 0,
-          height: "60px",
-          boxShadow: "2px 2px 4px #000000",
-          fontSize: "25px"
-        }} // To display it on top of the search box below
-      />
-    </div>
+    <>
+      <div style={{ width: "80%" }} className="container pt-3 mx-auto">
+        <h2> Integrated Link </h2>
+        <p style={{ marginBottom: 20 }}> Bank Mandiri Cabang Yos Sudarso </p>
+        <div className="container pt-1">
+          <form onSubmit={submitHandler}>
+            <div className="form-group mx-sm-3 mb-2">
+              <input
+                type="text"
+                onChange={changeHandler}
+                value={input}
+                ref={inputRef}
+                required
+                className="form-control form-control-lg border-dark rounded-lg"
+                placeholder="Silahkan cari link ..."
+                style={{ height: "60px" }}
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+      <>{content}</>
+    </>
   );
 };
 
