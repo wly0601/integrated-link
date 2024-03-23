@@ -41,11 +41,15 @@ const Navbar = () => {
     };
 
     console.log(import.meta.env.BACKEND_URL);
-    const { data } = await axios.post(`http://localhost:8000/link`, inp, {
-      headers: {
-        "Content-Type": "application/json"
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/link`,
+      inp,
+      {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-    });
+    );
 
     if (data) {
       setIsOpen(false);
