@@ -9,7 +9,6 @@ const Main = () => {
   const [result, setResult] = React.useState([]);
 
   const getLinks = async () => {
-    console.log(process.env.BANCKEND_URL);
     const get = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/link`);
     setLink(get.data);
   };
@@ -46,7 +45,6 @@ const Main = () => {
   };
 
   const changeHandler = e => {
-    console.log(inputRef.current.value);
     let key = inputRef.current.value;
     setInput(inputRef.current.value);
     const res = data.filter(n => n.name.match(new RegExp(`.*${key}.*`, "i")));

@@ -40,7 +40,6 @@ const Navbar = () => {
       name: linkRef.current.value
     };
 
-    console.log(import.meta.env.BACKEND_URL);
     const { data } = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/link`,
       inp,

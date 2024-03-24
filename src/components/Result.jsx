@@ -29,7 +29,6 @@ const customStylesDelete = {
 };
 
 const Result = ({ output }) => {
-  console.log(output);
   const titleRef = React.useRef("");
   const linkRef = React.useRef("");
   const [data, setData] = React.useState({});
@@ -70,7 +69,6 @@ const Result = ({ output }) => {
       name: linkRef.current.value
     };
 
-    console.log(import.meta.env.BACKEND_URL);
     await axios.put(
       `${import.meta.env.VITE_BACKEND_URL}/link/${data.id}`,
       inp,
