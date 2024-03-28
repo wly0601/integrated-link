@@ -65,7 +65,7 @@ const Navbar = () => {
         </h4>
         <button
           type="button"
-          className="btn btn-primary fw-bold"
+          className="btn btn-primary fw-bold btn-custom"
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
           data-bs-whatever="@getbootstrap"
